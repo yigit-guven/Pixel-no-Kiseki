@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel no Kiseki</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <header>
+        <a href="https://github.com/yigit-guven/Pixel-no-Kiseki" target="_blank" class="logo">
+            <img src="favicon.png" alt="Pixel no Kiseki Logo" class="logo-icon">
+            <div class="logo-text">Pixel no <span>Kiseki</span></div>
+        </a>
+        <div class="actions">
+            <a href="https://github.com/yigit-guven/Pixel-no-Kiseki" target="_blank" class="secondary icon-btn"
+                title="View Source on GitHub">
+                <i data-lucide="github"></i>
+            </a>
+            <button id="theme-toggle" class="secondary icon-btn" title="Toggle Theme">
+                <i data-lucide="moon"></i>
+            </button>
+            <button id="import-btn">
+                <i data-lucide="upload"></i> Import PNG
+            </button>
+            <button id="export-btn" class="primary">
+                <i data-lucide="download"></i> Export PNG
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <aside class="toolbar">
+            <div class="tool-btn active" id="tool-pencil" title="Pencil (P)">
+                <i data-lucide="pencil"></i>
+            </div>
+            <div class="tool-btn" id="tool-eraser" title="Eraser (E)">
+                <i data-lucide="eraser"></i>
+            </div>
+            <div class="tool-btn" id="tool-fill" title="Bucket Fill (B)">
+                <i data-lucide="paint-bucket"></i>
+            </div>
+            <div class="tool-btn" id="tool-eyedropper" title="Eyedropper (I)">
+                <i data-lucide="pipette"></i>
+            </div>
+            <div class="tool-btn" id="tool-hand" title="Hand / Pan (H)">
+                <i data-lucide="grab"></i>
+            </div>
+            <div style="flex: 1;"></div>
+            <div class="tool-btn" id="undo-btn" title="Undo (Ctrl+Z)">
+                <i data-lucide="undo-2"></i>
+            </div>
+            <div class="tool-btn" id="redo-btn" title="Redo (Ctrl+Y)">
+                <i data-lucide="redo-2"></i>
+            </div>
+        </aside>
+
+        <!-- Contextual Tool Settings -->
+        <aside class="tool-settings" id="tool-settings-panel">
+            <div class="panel" id="color-settings">
+                <h3 class="panel-title">Colors</h3>
+                <div class="color-picker-container">
+                    <div class="color-preview-row">
+                        <label class="color-swatch-btn" for="color-picker" title="Open color picker">
+                            <div id="color-preview-swatch"></div>
+                        </label>
+                        <input type="color" id="color-picker" style="display:none;" value="#38bdf8">
+                        <div class="color-input-group">
+                            <input type="text" id="hex-input" maxlength="9" placeholder="#RRGGBB" value="#38bdf8">
+                        </div>
+                    </div>
+                    <div class="alpha-row">
+                        <span class="alpha-label">A</span>
+                        <input type="range" id="alpha-slider" min="0" max="255" value="255">
+                        <span id="alpha-value" class="alpha-num">255</span>
+                    </div>
+                    <div class="palette" id="palette"></div>
+                </div>
+            </div>
+
+            <div class="panel" id="brush-settings">
+                <h3 class="panel-title">Brush Size</h3>
+                <div class="alpha-row">
+                    <input type="range" id="brush-size-slider" min="1" max="16" value="1" style="flex:1;">
+                    <span id="brush-size-label" class="alpha-num" style="width:auto; padding-left: 4px;">1px</span>
+                </div>
+                <div id="brush-preview-row"
+                    style="display:flex; align-items:center; justify-content:center; margin-top:8px; min-height:24px;">
+                </div>
+            </div>
+        </aside>
+
+        <section class="viewport" id="viewport">
+            <div id="canvas-container">
+                <canvas id="drawing-canvas"></canvas>
+            </div>
+            <div id="brush-cursor"></div>
+            <div class="stats">
+                <button id="center-view-btn" class="center-btn" title="Center View (C)">
+                    <i data-lucide="maximize"></i> Center
+                </button>
+                <span id="coord-display">0 : 0</span>
+                <span id="size-display">16 x 16</span>
+                <span id="zoom-display">100%</span>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <div class="panel">
+                <h3 class="panel-title">Canvas Settings</h3>
+                <div class="settings-panel">
+                    <div class="control-group">
+                        <label>Dimensions <span class="size-hint">Max 320px</span></label>
+                        <div class="dimension-grid">
+                            <div class="input-with-label">
+                                <span>W</span>
+                                <input type="number" id="canvas-width-input" min="1" max="320" value="16">
+                            </div>
+                            <div class="input-with-label">
+                                <span>H</span>
+                                <input type="number" id="canvas-height-input" min="1" max="320" value="16">
+                            </div>
+                        </div>
+                        <div class="presets">
+                            <button class="preset-btn" data-size="16">16</button>
+                            <button class="preset-btn" data-size="32">32</button>
+                            <button class="preset-btn" data-size="64">64</button>
+                            <button class="preset-btn secondary-preset" id="square-btn" title="Make Square">
+                                <i data-lucide="layout-template"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="actions-group">
+                        <button id="resize-btn" class="primary" style="width: 100%;">
+                            Apply Dimension Change
+                        </button>
+                        <div class="view-actions">
+                            <button id="fit-btn" title="Fit to Screen">
+                                <i data-lucide="shrink"></i> Fit
+                            </button>
+                            <button id="center-view-btn-sidebar" title="Center View">
+                                <i data-lucide="maximize"></i> Center
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="settings-tip">
+                        <i data-lucide="info" style="width: 12px; height: 12px;"></i>
+                        Resizing is non-destructive and crops/expands your canvas.
+                    </p>
+
+                    <button id="reset-canvas-btn"
+                        style="width: 100%; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.4); color: #ef4444;">
+                        <i data-lucide="trash-2"></i> Clear Canvas
+                    </button>
+                </div>
+            </div>
+
+            <div style="flex: 1;"></div>
+
+            <div class="panel sub-panel" style="text-align: center;">
+                <button id="info-btn" class="secondary" style="width: 100%; justify-content: center;">
+                    <i data-lucide="info"></i> Help & Information
+                </button>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Information Modal -->
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <div class="logo">
+                    <img src="favicon.png" alt="Logo" class="logo-icon">
+                    <div class="logo-text">Pixel no <span>Kiseki</span></div>
+                </div>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </header>
+
+            <div class="modal-body">
+                <section>
+                    <h4><i data-lucide="keyboard"></i> Controls & Shortcuts</h4>
+                    <div class="shortcut-grid">
+                        <div class="shortcut-item"><span class="key">P</span> Pencil</div>
+                        <div class="shortcut-item"><span class="key">E</span> Eraser</div>
+                        <div class="shortcut-item"><span class="key">B</span> Bucket Fill</div>
+                        <div class="shortcut-item"><span class="key">I</span> Eyedropper</div>
+                        <div class="shortcut-item"><span class="key">H</span> Hand Tool</div>
+                        <div class="shortcut-item"><span class="key">Space</span> Pan (Hold)</div>
+                        <div class="shortcut-item"><span class="key">Scroll</span> Zoom</div>
+                        <div class="shortcut-item"><span class="key">C</span> Center View</div>
+                        <div class="shortcut-item"><span class="key">Ctrl+Z</span> Undo</div>
+                        <div class="shortcut-item"><span class="key">Ctrl+Y</span> Redo</div>
+                    </div>
+                </section>
+
+                <section>
+                    <h4><i data-lucide="shield-check"></i> Privacy & Data</h4>
+                    <p>Pixel no Kiseki is a strictly private editor. No data is ever sent to a server. All artwork is
+                        processed locally in your browser and saved to your device only.</p>
+                </section>
+
+                <section>
+                    <h4><i data-lucide="user"></i> Author & License</h4>
+                    <p>Created by <strong><a href="https://yigitguven.net" target="_blank"
+                                style="color: var(--accent); text-decoration: none;">Yigit Guven</a></strong>. This
+                        project is licensed under the <strong><a href="https://opensource.org/licenses/MIT"
+                                target="_blank" style="color: var(--accent); text-decoration: none;">MIT
+                                License</a></strong>.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Reset Modal -->
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 360px;">
+            <div class="modal-body" style="text-align: center;">
+                <i data-lucide="alert-triangle"
+                    style="width: 40px; height: 40px; color: #f59e0b; margin-bottom: 12px;"></i>
+                <h3 style="margin-bottom: 8px;">Clear Canvas?</h3>
+                <p style="margin-bottom: 24px;">This will permanently erase all your artwork. This action cannot be
+                    undone.</p>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button id="confirm-reset-cancel" class="secondary" style="flex: 1;">Cancel</button>
+                    <button id="confirm-reset-ok"
+                        style="flex: 1; background: #ef4444; border-color: #ef4444; color: white;">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Input for file import -->
+    <input type="file" id="file-input" accept="image/png" style="display: none;">
+
+    <script src="app.js"></script>
+    <script>
+        // Initialize static icons only
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
