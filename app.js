@@ -329,6 +329,9 @@ class FileManager {
     constructor(state, viewport, workCanvas, workCtx) {
         this.state = state; this.viewport = viewport; this.workCanvas = workCanvas; this.workCtx = workCtx;
         this.fileInput = document.getElementById('file-input');
+        if (this.fileInput) {
+            this.fileInput.onchange = (e) => this.importPNG(e);
+        }
     }
 
     exportPNG() {
