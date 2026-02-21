@@ -1,9 +1,9 @@
-# Pixel-no-Kiseki (ピクセルノキセキ)
+# Pixel no Kiseki (ピクセルノキセキ)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Static Badge](https://img.shields.io/badge/Architecture-Unified_Portability-blue)](https://github.com/yigit-guven/Pixel-no-Kiseki)
 
-**Pixel-no-Kiseki** is a high-precision browser-based pixel art editor optimized for 8-bit icons, chibi sprites, and texture assets. Engineered with a focus on stability and portability, it provides a professional-grade drawing environment.
+**Pixel no Kiseki** is a high-precision browser-based pixel art editor optimized for 8-bit icons, chibi sprites, and texture assets. Engineered with a focus on stability and portability, it provides a professional-grade drawing environment.
 
 ## ✨ Key Features
 
