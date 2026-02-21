@@ -1,56 +1,66 @@
 # Pixel no Kiseki (ピクセルノキセキ)
 
+![Pixel no Kiseki Banner](banner.png)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Static Badge](https://img.shields.io/badge/Architecture-Unified_Portability-blue)](https://github.com/yigit-guven/Pixel-no-Kiseki)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/yigit-guven/Pixel-no-Kiseki/pulls)
 
-**Pixel no Kiseki** is a high-precision browser-based pixel art editor optimized for 8-bit icons, chibi sprites, and texture assets. Engineered with a focus on stability and portability, it provides a professional-grade drawing environment.
+**Pixel no Kiseki** is a sleek, glassmorphic pixel art editor designed for precision and a "Zen" creative workflow. Optimized for 8-bit icons, sprites, and game assets, it combines professional-grade tools with a focused, distraction-free environment.
+
+---
 
 ## ✨ Key Features
 
-- **Unified Portability Architecture**: Designed to run seamlessly in any modern environment, supporting both local `file://` protocol usage and web server hosting.
-- **Robust State Management**: Built on a reactive Pub/Sub architecture that ensures perfect synchronization between user input, rendering, and UI states.
-- **Precision Coordinate Engine**: Strict integer-based coordinate system prevents sub-pixel distortion and ensures razor-sharp pixel rendering at any zoom level.
-- **Advanced Tools**:
-  - **DDA Drawing**: Bresenham-based line drawing for perfect pixel paths.
-  - **Flood Fill**: Fast, recursion-safe seed fill algorithm.
-  - **Viewport Controller**: Lifecycle-aware viewport management with secondary resize stabilization.
-- **PNG Workflow**: 
-  - Dynamic canvas resizing with physical buffer cropping (no ghost data).
-  - High-fidelity PNG import and legacy-free export.
-- **Modern UI/UX**: Dark/Light mode support with glassmorphic aesthetics and Lucide icon integration.
+- **Zen Contextual Controls**: Settings panels (Color/Brush) only appear when relevant and can be toggled by re-clicking the active tool, maximizing your workspace.
+- **Glassmorphic Aesthetic**: A premium, modern interface with real-time blur and reactive dark/light themes.
+- **Advanced Color Engine**: Full support for **RGBC Alpha/Transparency**, custom palette swatches, and manual Hex input.
+- **Unified Portability**: Zero-dependency architecture. Runs perfectly via local `file://` protocol or any web server.
+- **Precision Viewport**: Real-time rendering engine with pixel-accurate snapping and high-performance zoom/pan.
+- **Physical Export**: Non-destructive canvas resizing with strict buffer cropping—exported PNGs match your dimensions exactly.
+
+## 🛠️ Toolset
+
+- **Pencil [P]**: DDA-based line drawing with multi-pixel brush support (1-16px).
+- **Eraser [E]**: Context-aware erasure with size control.
+- **Bucket Fill [B]**: High-speed, recursion-safe flood fill.
+- **Eyedropper [I]**: Precision color sampling.
+- **Hand [H]**: Seamless viewport panning.
+- **Center [C]**: Instant view stabilization.
 
 ## 🚀 Getting Started
 
-### Local Development
-The project is zero-dependency. To run it locally:
+### Local Use
 1. Clone the repository:
    ```bash
    git clone https://github.com/yigit-guven/Pixel-no-Kiseki.git
    ```
-2. Open `index.html` in your favorite web browser.
+2. Open `index.html` in any modern browser.
 
-### Key Bindings
-- **[P]** Pencil Tool
-- **[E]** Eraser Tool
-- **[B]** Bucket Fill
-- **[I]** Eyedropper
-- **[H]** Hand Tool (Pan)
-- **[C]** Center View
-- **[Ctrl + Z]** Undo
-- **[Ctrl + Y]** Redo
+### Shortcuts
+| Key | Action |
+| :--- | :--- |
+| `P` | Pencil Tool |
+| `E` | Eraser Tool |
+| `B` | Bucket Fill |
+| `I` | Eyedropper |
+| `H` | Hand (Pan) |
+| `C` | Center View |
+| `Ctrl+Z` | Undo |
+| `Ctrl+Y` | Redo |
 
-## 🏗️ Architecture Overview
+## 🏗️ Architecture
 
-The system is built on a **Modular Singleton Pattern** consolidated for portability:
-
-1. **State Manager**: The single source of truth for the application lifecycle.
-2. **Viewport Manager**: Handles the rendering pipeline, synchronization between offscreen buffers and the display canvas.
-3. **Tool Controller**: Encapsulates drawing logic and algorithmic pixel manipulation.
-4. **UI Controller**: Manages DOM bindings and user interaction events.
+The editor is powered by a **Modular Singleton Orchestrator** implemented in `app.js`:
+- **State.js**: Reactive Pub/Sub core managing application synchronization.
+- **Viewport.js**: Lifecycle-aware rendering pipeline.
+- **Tools.js**: Mathematical core for DDA lines and bucket fill logic.
+- **FileManager.js**: Strict-clipped PNG processing.
 
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
-*Created with ❤️ by Yigit Guven*
+*Created with ❤️ by [Yigit Guven](https://github.com/yigit-guven)*
+
